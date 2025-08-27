@@ -19,6 +19,6 @@ export const config = {
     "/resume/:path*",
     "/interview/:path*",
     "/ai-cover-letter/:path*",
-    "/onboarding/:path*",
+    // Removed "/onboarding/:path*" since users need to access it after first sign-in
   ],
 };

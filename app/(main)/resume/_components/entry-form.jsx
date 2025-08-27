@@ -89,16 +89,28 @@ export function EntryForm({ type, entries, onChange }) {
 
   // Replace handleImproveDescription with this
   const handleImproveDescription = async () => {
-    const description = watch("description");
-    if (!description) {
-      toast.error("Please enter a description first");
-      return;
-    }
+    try {
+      const description = watch("description");
+      if (!description || description.trim().length === 0) {
+        toast.error("Please enter a description first");
+        return;
+      }
 
-    await improveWithAIFn({
-      current: description,
-      type: type.toLowerCase(), // 'experience', 'education', or 'project'
-    });
+      if (description.trim().length < 10) {
+        toast.error("Description is too short. Please provide more details.");
+        return;
+      }
+
+      console.log("Improving description:", { description, type });
+      
+      await improveWithAIFn({
+        current: description.trim(),
+        type: type.toLowerCase(), // 'experience', 'education', or 'project'
+      });
+    } catch (error) {
+      console.error("Error in handleImproveDescription:", error);
+      toast.error("Failed to improve description. Please try again.");
+    }
   };
 
   return (

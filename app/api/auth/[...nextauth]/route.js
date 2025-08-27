@@ -66,8 +66,15 @@ export const authOptions = {
         session.user.id = token.id;
       }
       return session;
-    }
+    },
+
+    // 👇 add this
+    async redirect({ baseUrl }) {
+      // Always decide based on your own onboarding logic
+      return `${baseUrl}`; // <-- we'll handle exact page in OnboardingPage
+    },
   },
+
   pages: {
     signIn: "/auth/signin",
     signUp: "/auth/signup",

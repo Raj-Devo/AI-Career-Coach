@@ -59,41 +59,54 @@ export async function getResume() {
 }
 
 export async function improveWithAI({ current, type }) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.id) throw new Error("Unauthorized");
-
-  const user = await db.user.findUnique({
-    where: { id: session.user.id },
-    include: {
-      industryInsight: true,
-    },
-  });
-
-  if (!user) throw new Error("User not found");
-
-  const prompt = `
-    As an expert resume writer, improve the following ${type} description for a ${user.industry} professional.
-    Make it more impactful, quantifiable, and aligned with industry standards.
-    Current content: "${current}"
-
-    Requirements:
-    1. Use action verbs
-    2. Include metrics and results where possible
-    3. Highlight relevant technical skills
-    4. Keep it concise but detailed
-    5. Focus on achievements over responsibilities
-    6. Use industry-specific keywords
-    
-    Format the response as a single paragraph without any additional text or explanations.
-  `;
-
   try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) throw new Error("Unauthorized");
+
+    const user = await db.user.findUnique({
+      where: { id: session.user.id },
+      include: {
+        industryInsight: true,
+      },
+    });
+
+    if (!user) throw new Error("User not found");
+
+    if (!process.env.GEMINI_API_KEY) {
+      throw new Error("Gemini API key not configured");
+    }
+
+    if (!model) {
+      throw new Error("AI model not available");
+    }
+
+    const prompt = `
+      As an expert resume writer, improve the following ${type} description for a ${user.industry || 'professional'} professional.
+      Make it more impactful, quantifiable, and aligned with industry standards.
+      Current content: "${current}"
+
+      Requirements:
+      1. Use action verbs
+      2. Include metrics and results where possible
+      3. Highlight relevant technical skills
+      4. Keep it concise but detailed
+      5. Focus on achievements over responsibilities
+      6. Use industry-specific keywords
+      
+      Format the response as a single paragraph without any additional text or explanations.
+    `;
+
     const result = await model.generateContent(prompt);
     const response = result.response;
     const improvedContent = response.text().trim();
+    
+    if (!improvedContent) {
+      throw new Error("No content generated from AI");
+    }
+    
     return improvedContent;
   } catch (error) {
     console.error("Error improving content:", error);
-    throw new Error("Failed to improve content");
+    throw new Error(`Failed to improve content: ${error.message}`);
   }
 }
