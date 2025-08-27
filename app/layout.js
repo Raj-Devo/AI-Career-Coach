@@ -1,10 +1,9 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 import Header from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
-import { dark } from "@clerk/themes";
+import AuthProvider from "@/components/providers/SessionProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,16 +14,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider
-      appearance={{
-        baseTheme: dark,
-      }}
-    >
-      <html lang="en" suppressHydrationWarning>
-        <head>
-          <link rel="icon" href="/logo.png" sizes="any" />
-        </head>
-        <body className={`${inter.className}`}>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/logo.png" sizes="any" />
+      </head>
+      <body className={`${inter.className}`}>
+        <AuthProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
@@ -37,12 +32,12 @@ export default function RootLayout({ children }) {
 
             <footer className="bg-muted/50 py-12">
               <div className="container mx-auto px-4 text-center text-gray-200">
-                <p>Made with 💗 by RoadsideCoder</p>
+                <p>Made with 💗 by AI Career Coach</p>
               </div>
             </footer>
           </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+        </AuthProvider>
+      </body>
+    </html>
   );
 }

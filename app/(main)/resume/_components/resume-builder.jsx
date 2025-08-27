@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { saveResume } from "@/actions/resume";
 import { EntryForm } from "./entry-form";
 import useFetch from "@/hooks/use-fetch";
-import { useUser } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import { entriesToMarkdown } from "@/app/lib/helper";
 import { resumeSchema } from "@/app/lib/schema";
 import html2pdf from "html2pdf.js/dist/html2pdf.min.js";
@@ -28,7 +28,7 @@ import html2pdf from "html2pdf.js/dist/html2pdf.min.js";
 export default function ResumeBuilder({ initialContent }) {
   const [activeTab, setActiveTab] = useState("edit");
   const [previewContent, setPreviewContent] = useState(initialContent);
-  const { user } = useUser();
+  const { data: session } = useSession();
   const [resumeMode, setResumeMode] = useState("preview");
 
   const {
@@ -91,7 +91,7 @@ export default function ResumeBuilder({ initialContent }) {
     if (contactInfo.twitter) parts.push(`🐦 [Twitter](${contactInfo.twitter})`);
 
     return parts.length > 0
-      ? `## <div align="center">${user.fullName}</div>
+      ? `## <div align="center">${session?.user?.name || 'Your Name'}</div>
         \n\n<div align="center">\n\n${parts.join(" | ")}\n\n</div>`
       : "";
   };
