@@ -68,10 +68,13 @@ export const authOptions = {
       return session;
     },
 
-    // 👇 add this
-    async redirect({ baseUrl }) {
-      // Always decide based on your own onboarding logic
-      return `${baseUrl}`; // <-- we'll handle exact page in OnboardingPage
+    async redirect({ url, baseUrl }) {
+      // Allow explicit callbackUrl when it's same-origin
+      if (url?.startsWith(baseUrl)) return url;
+      // Allow relative callback paths like "/dashboard"
+      if (url?.startsWith("/")) return new URL(url, baseUrl).toString();
+      // Fallback to home
+      return baseUrl;
     },
   },
 

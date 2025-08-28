@@ -22,14 +22,11 @@ export default function SignInForm() {
       const result = await signIn("credentials", {
         email,
         password,
-        redirect: false,
+        callbackUrl: "/dashboard",
       });
 
       if (result?.error) {
         alert("Invalid credentials");
-      } else {
-        router.push("/dashboard");
-        router.refresh();
       }
     } catch (error) {
       console.error("Sign in error:", error);

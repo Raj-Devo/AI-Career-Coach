@@ -9,7 +9,7 @@ AI Career Coach is a comprehensive career development platform that helps users 
 - **Interview Practice** - AI-powered mock interviews with real-time feedback
 - **Career Assessments** - Technical and behavioral skill assessments with improvement tips
 - **Industry Insights** - Salary data, market trends, and skill recommendations
-- **User Authentication** - Secure login with Clerk authentication
+- **User Authentication** - Secure login with NextAuth (Credentials + Prisma)
 - **Responsive Design** - Modern UI built with Tailwind CSS and Radix UI
 
 ## 🛠️ Tech Stack
@@ -17,7 +17,7 @@ AI Career Coach is a comprehensive career development platform that helps users 
 - **Frontend**: Next.js 15, React 19, Tailwind CSS
 - **Backend**: Next.js API Routes, Prisma ORM
 - **Database**: PostgreSQL
-- **Authentication**: Clerk
+- **Authentication**: NextAuth (Credentials) with Prisma Adapter
 - **AI Integration**: Google Gemini AI
 - **UI Components**: Radix UI, Lucide React
 - **Form Handling**: React Hook Form with Zod validation
@@ -58,9 +58,10 @@ Create a `.env.local` file in the root directory with the following variables:
 # Database
 DATABASE_URL="postgresql://username:password@localhost:5432/ai_career_coach"
 
-# Authentication (Clerk)
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-CLERK_SECRET_KEY=your_clerk_secret_key
+# Authentication (NextAuth)
+NEXTAUTH_SECRET=your_long_random_secret
+# Required in production; optional in local dev
+# NEXTAUTH_URL=http://localhost:3000
 
 # AI Integration (Google Gemini)
 GEMINI_API_KEY=your_gemini_api_key
@@ -105,11 +106,13 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the a
 
 ## 🔑 API Keys Setup
 
-### Clerk Authentication
-1. Go to [clerk.com](https://clerk.com) and create an account
-2. Create a new application
-3. Copy your publishable key and secret key
-4. Add them to your `.env.local` file
+### NextAuth Authentication
+This project uses email/password credentials with NextAuth and a Prisma adapter.
+
+1. Set `NEXTAUTH_SECRET` in your `.env.local` (use a strong random string)
+2. Start the dev server and open `http://localhost:3000/auth/signup` to create an account
+3. Sign in at `http://localhost:3000/auth/signin`
+4. In production, set `NEXTAUTH_URL` to your deployed URL
 
 ### Google Gemini AI
 1. Go to [Google AI Studio](https://aistudio.google.com/)
@@ -127,7 +130,8 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the a
 ```
 ai-career-coach/
 ├── app/                    # Next.js app directory
-│   ├── (auth)/            # Authentication routes
+│   ├── (auth)/            # Authentication layouts
+│   ├── auth/              # Sign in / sign up pages
 │   ├── (main)/            # Main application routes
 │   ├── api/               # API endpoints
 │   ├── globals.css        # Global styles
@@ -144,13 +148,12 @@ ai-career-coach/
 
 ## 🗄️ Database Schema
 
-The application uses the following main models:
+The application uses the following main models (simplified):
 
 - **User**: User profiles with industry and experience information
 - **Resume**: User resumes with ATS scoring and feedback
 - **CoverLetter**: Generated cover letters for specific job applications
-- **Assessment**: Skill assessments with AI-generated improvement tips
-- **IndustryInsight**: Industry trends, salary data, and skill recommendations
+- **Assessment/Interview**: Mock interview quizzes and results
 
 ## 🚀 Available Scripts
 
@@ -165,9 +168,6 @@ The application uses the following main models:
 ```bash
 # Run linting
 npm run lint
-
-# Check TypeScript types (if using TypeScript)
-npm run type-check
 ```
 
 ## 📦 Deployment
@@ -184,6 +184,13 @@ The application can be deployed to any platform that supports Next.js:
 - Railway
 - DigitalOcean App Platform
 - AWS Amplify
+
+When deploying, remember to set:
+- `DATABASE_URL`
+- `NEXTAUTH_SECRET`
+- `NEXTAUTH_URL` (your public app URL)
+- `GEMINI_API_KEY`
+- `INNGEST_*` keys if using Inngest
 
 ## 🔧 Configuration
 
@@ -204,11 +211,6 @@ Code quality is enforced through ESLint with Next.js recommended rules. Configur
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
 
 If you encounter any issues:
 
@@ -222,7 +224,7 @@ If you encounter any issues:
 - UI components from [Radix UI](https://www.radix-ui.com/)
 - Styling with [Tailwind CSS](https://tailwindcss.com/)
 - AI powered by [Google Gemini](https://aistudio.google.com/)
-- Authentication by [Clerk](https://clerk.com/)
+- Authentication by [NextAuth](https://next-auth.js.org/)
 
 ---
 
