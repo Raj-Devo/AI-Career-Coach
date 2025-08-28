@@ -8,8 +8,8 @@ import AuthProvider from "@/components/providers/SessionProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "AI Career Coach",
-  description: "",
+  title: "HireCraft",
+  description: "HireCraft is a platform for job seekers to get their dream job.",
 };
 
 export default function RootLayout({ children }) {

@@ -1,6 +1,6 @@
-# AI Career Coach 🚀
+# HireCraft 🚀
 
-AI Career Coach is a comprehensive career development platform that helps users build resumes, generate tailored cover letters, and practice interviews with AI assistance. It's a one-stop career toolkit designed to boost confidence, optimize applications, and accelerate job searches.
+HireCraft is a comprehensive career development platform that helps users build resumes, generate tailored cover letters, and practice interviews with AI assistance. It's a one-stop career toolkit designed to boost confidence, optimize applications, and accelerate job searches.
 
 ## ✨ Features
 

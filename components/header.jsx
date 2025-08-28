@@ -33,9 +33,10 @@ export default function Header() {
           <Image
             src={"/logo.png"}
             alt="Sensai Logo"
-            width={200}
-            height={60}
-            className="h-12 py-1 w-auto object-contain"
+            width={360}
+            height={120}
+            className="h-16 md:h-20 py-1 w-auto object-contain"
+            priority
           />
         </Link>
 

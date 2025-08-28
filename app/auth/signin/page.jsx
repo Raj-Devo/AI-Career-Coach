@@ -11,9 +11,10 @@ export default function SignInPage() {
             <Image
               src="/logo.png"
               alt="AI Career Coach Logo"
-              width={200}
-              height={60}
-              className="h-16 w-auto object-contain"
+              width={480}
+              height={144}
+              className="h-24 md:h-28 w-auto object-contain"
+              priority
             />
           </div>
           <h2 className="text-4xl font-bold gradient-title">
