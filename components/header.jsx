@@ -27,7 +27,7 @@ export default function Header() {
   const { data: session, status } = useSession();
 
   return (
-    <header className="fixed top-0 w-full border-b bg-background/80 backdrop-blur-md z-50 supports-[backdrop-filter]:bg-background/60">
+    <header className="fixed top-0 w-full border-b z-50 bg-gradient-to-b from-emerald-600/40 via-teal-600/30 to-cyan-600/20 backdrop-blur-md supports-[backdrop-filter]:bg-gradient-to-b">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/">
           <Image
